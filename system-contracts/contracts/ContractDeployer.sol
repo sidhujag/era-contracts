@@ -30,6 +30,29 @@ contract ContractDeployer is IContractDeployer, ISystemContract {
         _;
     }
 
+    function registerVanityAccount(
+        string memory accountName,
+        bytes32 _bytecodeHash,
+        bytes calldata _input
+    ) external returns (address) {
+        require(bytes(accountName).length <= 10, "Input must be up to 10 characters");
+
+        // Convert string to bytes32 to be able to fit it into the address format
+        uint256 paddedBytes;
+
+        // Copy string bytes into paddedBytes, starting from the end (left-padded)
+        bytes memory inputBytes = bytes(accountName);
+        for (uint i = 0; i < inputBytes.length; i++) {
+            paddedBytes |= uint256(uint8(inputBytes[i] & 0xFF)) << ((inputBytes.length - i - 1) * 8);
+        }
+
+        address newAddress = address(uint160(paddedBytes));
+        _nonSystemDeployOnAddress(_bytecodeHash, newAddress, AccountAbstractionVersion.None, _input);
+
+        // Convert bytes32 to address (last 20 bytes of bytes32)
+        return newAddress;
+    }
+
     /// @notice Returns information about a certain account.
     function getAccountInfo(address _address) external view returns (AccountInfo memory info) {
         return accountInfo[_address];
