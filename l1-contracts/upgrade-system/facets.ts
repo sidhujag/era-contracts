@@ -41,9 +41,9 @@ async function deployFacetCuts(
   const wallet = privateKey
     ? new ethers.Wallet(privateKey, provider)
     : ethers.Wallet.fromMnemonic(
-      process.env.MNEMONIC ? process.env.MNEMONIC : ethTestConfig.mnemonic,
-      "m/44'/60'/0'/0/1"
-    ).connect(provider);
+        process.env.MNEMONIC ? process.env.MNEMONIC : ethTestConfig.mnemonic,
+        "m/44'/60'/0'/0/1"
+      ).connect(provider);
   const deployedFacets = {};
   const ethTxOptions = {};
   if (!nonce) {

@@ -25,9 +25,9 @@ async function deployVerifier(
   const wallet = privateKey
     ? new ethers.Wallet(privateKey, provider)
     : ethers.Wallet.fromMnemonic(
-      process.env.MNEMONIC ? process.env.MNEMONIC : ethTestConfig.mnemonic,
-      "m/44'/60'/0'/0/1"
-    ).connect(provider);
+        process.env.MNEMONIC ? process.env.MNEMONIC : ethTestConfig.mnemonic,
+        "m/44'/60'/0'/0/1"
+      ).connect(provider);
 
   create2Salt = create2Salt ?? ethers.constants.HashZero;
 
