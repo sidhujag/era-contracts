@@ -6,7 +6,6 @@ import type { BigNumber } from "ethers";
 import { ethers } from "ethers";
 import * as fs from "fs";
 import { deployViaCreate2 } from "../src.ts/deploy-utils";
-import { web3Url } from "zk/build/utils";
 import * as path from "path";
 import { insertGasPrice } from "./utils";
 
@@ -26,9 +25,9 @@ async function deployVerifier(
   const wallet = privateKey
     ? new ethers.Wallet(privateKey, provider)
     : ethers.Wallet.fromMnemonic(
-        process.env.MNEMONIC ? process.env.MNEMONIC : ethTestConfig.mnemonic,
-        "m/44'/60'/0'/0/1"
-      ).connect(provider);
+      process.env.MNEMONIC ? process.env.MNEMONIC : ethTestConfig.mnemonic,
+      "m/44'/60'/0'/0/1"
+    ).connect(provider);
 
   create2Salt = create2Salt ?? ethers.constants.HashZero;
 
@@ -70,6 +69,6 @@ command
   .option("--create2-salt <create2Salt>")
   .description("deploy verifier")
   .action(async (cmd) => {
-    const l1Rpc = cmd.l1Rpc ?? web3Url();
+    const l1Rpc = cmd.l1Rpc ?? process.env.ETH_CLIENT_WEB3_URL;
     await deployVerifier(l1Rpc, cmd.create2Address, cmd.nonce, cmd.gasPrice, cmd.privateKey, cmd.file, cmd.create2Salt);
   });
