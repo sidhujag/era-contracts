@@ -569,7 +569,7 @@ contract ContractDeployer is IContractDeployer, SystemContractBase {
             SystemContractHelper.setValueForNextFarCall(uint128(value));
         }
 
-        bytes memory paddedBytecode = EfficientCall.mimicCall({
+        bytes memory bytecode = EfficientCall.mimicCall({
             _gas: gasleft(), // note: native gas, not EVM gas
             _address: _newAddress,
             _data: _input,
@@ -579,22 +579,22 @@ contract ContractDeployer is IContractDeployer, SystemContractBase {
         });
 
         assembly {
-            let dataLen := mload(paddedBytecode)
-            constructorReturnEvmGas := mload(add(paddedBytecode, dataLen))
-            mstore(paddedBytecode, sub(dataLen, 0x20))
+            let dataLen := mload(bytecode)
+            constructorReturnEvmGas := mload(add(bytecode, dataLen))
+            mstore(bytecode, sub(dataLen, 0x20))
         }
 
-        bytes32 versionedCodeHash = KNOWN_CODE_STORAGE_CONTRACT.publishEVMBytecode(paddedBytecode);
+        bytes32 versionedCodeHash = KNOWN_CODE_STORAGE_CONTRACT.publishEVMBytecode(bytecode);
         ACCOUNT_CODE_STORAGE_SYSTEM_CONTRACT.storeAccountConstructedCodeHash(_newAddress, versionedCodeHash);
 
         bytes32 evmBytecodeHash;
         assembly {
-            let bytecodeLen := mload(add(paddedBytecode, 0x20))
-            evmBytecodeHash := keccak256(add(paddedBytecode, 0x40), bytecodeLen)
+            let bytecodeLen := mload(bytecode)
+            evmBytecodeHash := keccak256(add(bytecode, 0x20), bytecodeLen)
         }
 
         _setEvmCodeHash(_newAddress, evmBytecodeHash);
-
+        
         emit ContractDeployed(_sender, versionedCodeHash, _newAddress);
     }
 

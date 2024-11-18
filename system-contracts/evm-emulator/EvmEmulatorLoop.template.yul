@@ -443,9 +443,7 @@ for { } true { } {
             evmGasLeft := chargeGas(evmGasLeft, 2500)
         }
 
-        switch isEvmContract(addr) 
-            case 0  { stackHead := extcodesize(addr) }
-            default { stackHead := fetchDeployedEvmCodeLen(addr) }
+        stackHead := extcodesize(addr)
 
         ip := add(ip, 1)
     }
