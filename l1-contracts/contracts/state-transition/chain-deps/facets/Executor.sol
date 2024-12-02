@@ -55,6 +55,7 @@ contract ExecutorFacet is ZkSyncHyperchainBase, IExecutor {
             for (uint8 i = uint8(SystemLogKey.BLOB_ONE_HASH_KEY); i <= uint8(SystemLogKey.BLOB_SIX_HASH_KEY); i++) {
                 logOutput.blobHashes[i - uint8(SystemLogKey.BLOB_ONE_HASH_KEY)] = bytes32(0);
             }
+            _verifyPoDAInformation(logOutput.stateDiffHash);
         } else if (pubdataSource == uint8(PubdataSource.Blob)) {
             // In this scenario, pubdataCommitments is a list of: opening point (16 bytes) || claimed value (32 bytes) || commitment (48 bytes) || proof (48 bytes)) = 144 bytes
             blobCommitments = _verifyBlobInformation(_newBatch.pubdataCommitments[1:], logOutput.blobHashes);
@@ -608,7 +609,18 @@ contract ExecutorFacet is ZkSyncHyperchainBase, IExecutor {
         (, uint256 result) = abi.decode(data, (uint256, uint256));
         require(result == BLS_MODULUS, "precompile unexpected output");
     }
+    /// @dev Verifies that list of hashes of the data in BitcoinDA.
+    function _verifyPoDAInformation(
+        bytes32 _dataHash
+    ) internal view {
+        address PODA_PRECOMPILE_ADDRESS = address(0x63);
+        uint16 PODA_PRECOMPILE_COST = 1400;
+        (bool success, bytes memory result) = PODA_PRECOMPILE_ADDRESS.staticcall{gas: PODA_PRECOMPILE_COST}(abi.encode(_dataHash));
 
+        require(success, "Staticcall failed.");
+        require(result.length > 0, "Return data must not be empty.");
+        
+    }
     /// @dev Verifies that the blobs contain the correct data by calling the point evaluation precompile. For the precompile we need:
     /// versioned hash || opening point || opening value || commitment || proof
     /// the _pubdataCommitments will contain the last 4 values, the versioned hash is pulled from the BLOBHASH opcode
