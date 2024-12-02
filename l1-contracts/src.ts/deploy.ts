@@ -174,7 +174,7 @@ export class Deployer {
   }
 
   public async deployGovernance(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2(
       "Governance",
       // TODO: load parameters from config
@@ -191,7 +191,7 @@ export class Deployer {
   }
 
   public async deployChainAdmin(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2(
       "ChainAdmin",
       [this.ownerAddress, ethers.constants.AddressZero],
@@ -205,7 +205,7 @@ export class Deployer {
   }
 
   public async deployBridgehubImplementation(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("Bridgehub", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -216,7 +216,7 @@ export class Deployer {
   }
 
   public async deployTransparentProxyAdmin(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     if (this.verbose) {
       console.log("Deploying Proxy Admin");
     }
@@ -252,7 +252,7 @@ export class Deployer {
   }
 
   public async deployBridgehubProxy(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
 
     const bridgehub = new Interface(hardhat.artifacts.readArtifactSync("Bridgehub").abi);
 
@@ -276,7 +276,7 @@ export class Deployer {
     create2Salt: string,
     ethTxOptions: ethers.providers.TransactionRequest
   ) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2(
       "StateTransitionManager",
       [this.addresses.Bridgehub.BridgehubProxy, getNumberFromEnv("CONTRACTS_MAX_NUMBER_OF_HYPERCHAINS")],
@@ -296,7 +296,7 @@ export class Deployer {
     ethTxOptions: ethers.providers.TransactionRequest,
     extraFacets?: FacetCut[]
   ) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const genesisBatchHash = getHashFromEnv("CONTRACTS_GENESIS_ROOT"); // TODO: confusing name
     const genesisRollupLeafIndex = getNumberFromEnv("CONTRACTS_GENESIS_ROLLUP_LEAF_INDEX");
     const genesisBatchCommitment = getHashFromEnv("CONTRACTS_GENESIS_BATCH_COMMITMENT");
@@ -342,7 +342,7 @@ export class Deployer {
   }
 
   public async deployAdminFacet(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("AdminFacet", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -353,7 +353,7 @@ export class Deployer {
   }
 
   public async deployMailboxFacet(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const eraChainId = getNumberFromEnv("CONTRACTS_ERA_CHAIN_ID");
     const contractAddress = await this.deployViaCreate2("MailboxFacet", [eraChainId], create2Salt, ethTxOptions);
 
@@ -366,7 +366,7 @@ export class Deployer {
   }
 
   public async deployExecutorFacet(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("ExecutorFacet", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -377,7 +377,7 @@ export class Deployer {
   }
 
   public async deployGettersFacet(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("GettersFacet", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -388,7 +388,7 @@ export class Deployer {
   }
 
   public async deployVerifier(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
 
     let contractAddress: string;
 
@@ -410,7 +410,7 @@ export class Deployer {
     ethTxOptions: ethers.providers.TransactionRequest,
     dummy: boolean = false
   ) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2(
       dummy ? "DummyL1ERC20Bridge" : "L1ERC20Bridge",
       [this.addresses.Bridges.SharedBridgeProxy],
@@ -514,7 +514,7 @@ export class Deployer {
   // used for testing, mimics original deployment process.
   // we don't use the real implementation, as we need the address to be independent
   public async deployERC20BridgeProxy(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const initCalldata = new Interface(hardhat.artifacts.readArtifactSync("L1ERC20Bridge").abi).encodeFunctionData(
       "initialize"
     );
@@ -535,7 +535,7 @@ export class Deployer {
     create2Salt: string,
     ethTxOptions: ethers.providers.TransactionRequest
   ) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const tokens = getTokens();
     const l1WethToken = tokens.find((token: { symbol: string }) => token.symbol == "WETH")!.address;
     const eraChainId = getNumberFromEnv("CONTRACTS_ERA_CHAIN_ID");
@@ -556,7 +556,7 @@ export class Deployer {
   }
 
   public async deploySharedBridgeProxy(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const initCalldata = new Interface(hardhat.artifacts.readArtifactSync("L1SharedBridge").abi).encodeFunctionData(
       "initialize",
       [this.addresses.Governance]
@@ -576,7 +576,7 @@ export class Deployer {
   }
 
   public async sharedBridgeSetEraPostUpgradeFirstBatch(ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const sharedBridge = L1SharedBridgeFactory.connect(this.addresses.Bridges.SharedBridgeProxy, this.deployWallet);
     const storageSwitch = getNumberFromEnv("CONTRACTS_SHARED_BRIDGE_UPGRADE_STORAGE_SWITCH");
     const tx = await sharedBridge.setEraPostUpgradeFirstBatch(storageSwitch);
@@ -587,7 +587,7 @@ export class Deployer {
   }
 
   public async registerSharedBridge(ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const bridgehub = this.bridgehubContract(this.deployWallet);
 
     /// registering ETH as a valid token, with address 1.
@@ -607,7 +607,7 @@ export class Deployer {
     create2Salt: string,
     ethTxOptions: ethers.providers.TransactionRequest
   ) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("DiamondInit", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -618,7 +618,7 @@ export class Deployer {
   }
 
   public async deployDefaultUpgrade(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("DefaultUpgrade", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -629,7 +629,7 @@ export class Deployer {
   }
 
   public async deployHyperchainsUpgrade(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("UpgradeHyperchains", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -640,7 +640,7 @@ export class Deployer {
   }
 
   public async deployGenesisUpgrade(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("GenesisUpgrade", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -703,7 +703,7 @@ export class Deployer {
     predefinedChainId?: string,
     useGovernance: boolean = false
   ) {
-    const gasLimit = 10_000_000;
+    const gasLimit = 8_000_000;
 
     nonce = nonce ? parseInt(nonce) : await this.deployWallet.getTransactionCount();
 
@@ -871,7 +871,7 @@ export class Deployer {
   }
 
   public async deployValidatorTimelock(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const executionDelay = getNumberFromEnv("CONTRACTS_VALIDATOR_TIMELOCK_EXECUTION_DELAY");
     const eraChainId = getNumberFromEnv("CONTRACTS_ERA_CHAIN_ID");
     const contractAddress = await this.deployViaCreate2(
@@ -900,7 +900,7 @@ export class Deployer {
   }
 
   public async deployMulticall3(create2Salt: string, ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     const contractAddress = await this.deployViaCreate2("Multicall3", [], create2Salt, ethTxOptions);
 
     if (this.verbose) {
@@ -912,7 +912,7 @@ export class Deployer {
     create2Salt: string,
     ethTxOptions: ethers.providers.TransactionRequest
   ) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     // solc contracts/zksync/utils/blobVersionedHashRetriever.yul --strict-assembly --bin
     const bytecode = "0x600b600b5f39600b5ff3fe5f358049805f5260205ff3";
 

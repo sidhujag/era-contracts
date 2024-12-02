@@ -39,9 +39,12 @@ export default {
   networks: {
     env: {
       url: process.env.ETH_CLIENT_WEB3_URL?.split(",")[0],
+      gas: 8000000,
     },
     hardhat: {
       allowUnlimitedContractSize: false,
+      blockGasLimit: 8000000,
+      timeout: 1200000, // 20 mins
       forking: {
         url: "https://eth-goerli.g.alchemy.com/v2/" + process.env.ALCHEMY_KEY,
         enabled: process.env.TEST_CONTRACTS_FORK === "1",
@@ -50,6 +53,9 @@ export default {
   },
   etherscan: {
     apiKey: process.env.MISC_ETHERSCAN_API_KEY,
+  },
+  sourcify: {
+    enabled: true
   },
   gasReporter: {
     enabled: true,

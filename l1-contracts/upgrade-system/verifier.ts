@@ -39,7 +39,7 @@ async function deployVerifier(
   if (!gasPrice) {
     await insertGasPrice(provider, ethTxOptions);
   }
-  ethTxOptions["gasLimit"] = 10_000_000;
+  ethTxOptions["gasLimit"] = 8_000_000;
   const [address, txHash] = await deployViaCreate2(
     wallet,
     "Verifier",

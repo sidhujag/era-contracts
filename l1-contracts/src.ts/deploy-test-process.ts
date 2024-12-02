@@ -216,7 +216,7 @@ export async function initialEraTestnetDeploymentProcess(
 export class EraDeployer extends Deployer {
   public syncWallet: zkethers.Wallet;
   public async deployDiamondProxy(extraFacets: FacetCut[], ethTxOptions: ethers.providers.TransactionRequest) {
-    ethTxOptions.gasLimit ??= 10_000_000;
+    ethTxOptions.gasLimit ??= 8_000_000;
     ethTxOptions.gasPrice ??= 89_990_000; // to fix gasPrice
     const chainId = getNumberFromEnv("ETH_CLIENT_CHAIN_ID");
     const dummyAdminAddress = await this.deployViaCreate2(
