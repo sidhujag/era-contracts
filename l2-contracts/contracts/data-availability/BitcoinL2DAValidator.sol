@@ -4,7 +4,7 @@ pragma solidity 0.8.24;
 
 import {IL2DAValidator} from "../interfaces/IL2DAValidator.sol";
 
-import {EfficientCall} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/EfficientCall.sol";
+
 import {ReconstructionMismatch, PubdataField} from "./DAErrors.sol";
 
 /// BitcoinDA validator. It will publish inclusion data that would allow to verify the inclusion.
@@ -35,6 +35,6 @@ contract BitcoinL2DAValidator is IL2DAValidator {
         // - First 32 bytes are the hash of the uncompressed state diff.
         // - Then, there is a 32-byte hash of the DA.
 
-        outputHash = keccak256(abi.encodePacked(uncompressedStateDiffHash, EfficientCall.keccak(_totalPubdata)));
+        outputHash = keccak256(_totalL2ToL1PubdataAndStateDiffs);
     }
 }
