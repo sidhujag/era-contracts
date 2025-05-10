@@ -2,11 +2,9 @@
 
 pragma solidity 0.8.24;
 
-import {IL2DAValidator} from "../interfaces/IL2DAValidator.sol";
-
 
 /// BitcoinDA validator. It will publish inclusion data that would allow to verify the inclusion.
-contract BitcoinL2DAValidator is IL2DAValidator {
+contract BitcoinL2DAValidator {
     function validatePubdata(
         // The rolling hash of the user L2->L1 logs.
         bytes32,
@@ -18,17 +16,8 @@ contract BitcoinL2DAValidator is IL2DAValidator {
         bytes32 _chainedBytecodesHash,
         // Operator data, that is related to the DA itself
         bytes calldata _totalL2ToL1PubdataAndStateDiffs
-    ) external returns (bytes32 outputHash) {
+    ) external  {
         
-        bytes32 uncompressedStateDiffHash = _chainedBytecodesHash;
-        bytes calldata _totalPubdata = _totalL2ToL1PubdataAndStateDiffs;
-        bytes calldata leftover = _totalL2ToL1PubdataAndStateDiffs;
-       
-
-        // The preimage under the hash `outputHash` is expected to be in the following format:
-        // - First 32 bytes are the hash of the uncompressed state diff.
-        // - Then, there is a 32-byte hash of the DA.
-
-        outputHash = keccak256(_totalL2ToL1PubdataAndStateDiffs);
+     return;
     }
 }
