@@ -2,14 +2,14 @@
 
 pragma solidity 0.8.24;
 
-import {IL2DAValidator} from "../interfaces/IL2DAValidator.sol";
+
 import {StateDiffL2DAValidator} from "./StateDiffL2DAValidator.sol";
 
 import {EfficientCall} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/EfficientCall.sol";
 import {ReconstructionMismatch, PubdataField} from "./DAErrors.sol";
 
 /// BitcoinDA validator. It will publish inclusion data that would allow to verify the inclusion.
-contract BitcoinL2DAValidator is IL2DAValidator, StateDiffL2DAValidator {
+contract BitcoinL2DAValidator is StateDiffL2DAValidator {
     function validatePubdata(
         // The rolling hash of the user L2->L1 logs.
         bytes32,
