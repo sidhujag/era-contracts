@@ -5,8 +5,6 @@ pragma solidity 0.8.24;
 import {IL2DAValidator} from "../interfaces/IL2DAValidator.sol";
 
 
-import {ReconstructionMismatch, PubdataField} from "./DAErrors.sol";
-
 /// BitcoinDA validator. It will publish inclusion data that would allow to verify the inclusion.
 contract BitcoinL2DAValidator is IL2DAValidator {
     function validatePubdata(
@@ -26,10 +24,6 @@ contract BitcoinL2DAValidator is IL2DAValidator {
         bytes calldata _totalPubdata = _totalL2ToL1PubdataAndStateDiffs;
         bytes calldata leftover = _totalL2ToL1PubdataAndStateDiffs;
        
-        /// Check for calldata strict format
-        if (leftover.length != 0) {
-            revert ReconstructionMismatch(PubdataField.ExtraData, bytes32(0), bytes32(leftover.length));
-        }
 
         // The preimage under the hash `outputHash` is expected to be in the following format:
         // - First 32 bytes are the hash of the uncompressed state diff.
