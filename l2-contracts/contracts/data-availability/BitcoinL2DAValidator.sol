@@ -2,14 +2,13 @@
 
 pragma solidity 0.8.24;
 
-
-import {StateDiffL2DAValidator} from "./StateDiffL2DAValidator.sol";
+import {IL2DAValidator} from "../interfaces/IL2DAValidator.sol";
 
 import {EfficientCall} from "@matterlabs/zksync-contracts/l2/system-contracts/libraries/EfficientCall.sol";
 import {ReconstructionMismatch, PubdataField} from "./DAErrors.sol";
 
 /// BitcoinDA validator. It will publish inclusion data that would allow to verify the inclusion.
-contract BitcoinL2DAValidator is StateDiffL2DAValidator {
+contract BitcoinL2DAValidator is IL2DAValidator {
     function validatePubdata(
         // The rolling hash of the user L2->L1 logs.
         bytes32,
@@ -22,12 +21,11 @@ contract BitcoinL2DAValidator is StateDiffL2DAValidator {
         // Operator data, that is related to the DA itself
         bytes calldata _totalL2ToL1PubdataAndStateDiffs
     ) external returns (bytes32 outputHash) {
-        (
-            bytes32 uncompressedStateDiffHash,
-            bytes calldata _totalPubdata,
-            bytes calldata leftover
-        ) = _produceStateDiffPubdata(_chainedMessagesHash, _chainedBytecodesHash, _totalL2ToL1PubdataAndStateDiffs);
-
+        
+        bytes32 uncompressedStateDiffHash = _chainedBytecodesHash;
+        bytes calldata _totalPubdata = _totalL2ToL1PubdataAndStateDiffs;
+        bytes calldata leftover = _totalL2ToL1PubdataAndStateDiffs;
+       
         /// Check for calldata strict format
         if (leftover.length != 0) {
             revert ReconstructionMismatch(PubdataField.ExtraData, bytes32(0), bytes32(leftover.length));
